@@ -5,7 +5,11 @@
 html {
   text-align: center;
   font-size: 1rem;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: sans-serif;
+}
+
+.players {
+  display: none;
 }
 
 .player {
@@ -22,13 +26,14 @@ html {
 #game {
   max-width: 450px;
   margin: 0 auto;
+  margin-top: 4rem;
   display: flex;
   flex-direction: column;
 }
 
-.score {
+.score,
+.message {
   margin: 1rem 0;
-  text-align: center;
 }
 
 .row,

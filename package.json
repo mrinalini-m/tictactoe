@@ -1,0 +1,22 @@
+{
+  "name": "tictactoe",
+  "version": "1.0.0",
+  "description": "Implementation of Tic Tac Toe in javascript.",
+  "main": "src/tictactoe.js",
+  "scripts": {
+    "start": "open index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrinalini-m/tictactoe.git"
+  },
+  "keywords": [
+    "tictactoe"
+  ],
+  "author": "Mrinalini 'Sam' Manandhar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrinalini-m/tictactoe/issues"
+  },
+  "homepage": "https://github.com/mrinalini-m/tictactoe#readme"
+}

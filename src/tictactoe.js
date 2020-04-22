@@ -1,4 +1,14 @@
 class TicTacToe {
+  /**
+   * board - 3x3 matrix of empty strings.
+   * players - Object representing the players.
+   * score - Object representing scores of players.
+   * currentPlayer - Current player, initialized to x.
+   * moveCount - Current move count
+   * @param {string} player1
+   * @param {string} player2
+   */
+
   constructor(player1, player2) {
     this.board = null
     this.players = {
@@ -13,6 +23,8 @@ class TicTacToe {
     this.handleClickCell = this.handleClickCell.bind(this)
     this.handleClickReplay = this.handleClickReplay.bind(this)
   }
+
+  /** Create new board, render the score board, game board and replay button. */
   init() {
     this.createNewBoard()
     this.printScoreBoard(this.score)
@@ -20,6 +32,7 @@ class TicTacToe {
     this.printReplayButton()
   }
 
+  /** Create and return DOM element with optional class, id and dataset. */
   createElement(tag, className, id, data) {
     const element = document.createElement(tag)
     if (className) element.classList.add(className)
@@ -32,15 +45,26 @@ class TicTacToe {
     return element
   }
 
+  /**
+   * Retrieve existing DOM element.
+   * @param {string} selector
+   * */
   getElement(selector) {
     return document.querySelector(selector)
   }
+
+  /**
+   * Retrieve DOM element and append specified value.
+   * @param {string} selector
+   * @param {string} newVal
+   * */
 
   appendToElement(selector, newVal) {
     const element = this.getElement(selector)
     element.append(newVal)
   }
 
+  /** Create a new board with empty string for cell vals */
   createNewBoard() {
     const board = []
     for (let i = 0; i < 3; i++) {
@@ -48,6 +72,13 @@ class TicTacToe {
     }
     this.board = board
   }
+
+  /**
+   * Update the game board with current player's cell with player's token.
+   * @param {string} row
+   * @param {string} col
+   * @param {string} playerToken
+   * */
 
   updateGameBoard(row, col, playerToken) {
     const board = this.board
@@ -59,6 +90,10 @@ class TicTacToe {
     this.appendToElement(`#c-${row}-${col}`, cellVal)
   }
 
+  /**
+   * Create game board and append to DOM
+   * @param {Array[]} board - 2d array of rows and cols of game board
+   */
   printGameBoard(board) {
     const game = this.getElement('#game'),
       gameBoard = this.createElement('div', 'board')
@@ -81,11 +116,13 @@ class TicTacToe {
     }
   }
 
+  /** Get the winner and if the winner exists, increment winning player's score. */
   updateScore() {
     const winner = this.winner && this.winner.token
     if (winner) this.score[winner] = this.score[winner] + 1
   }
 
+  /** Update the winning player's score on the score board */
   updateScoreBoard() {
     const token = this.winner.token,
       score = this.score[token]
@@ -94,6 +131,10 @@ class TicTacToe {
     scoreBoard.innerText = `${score}`
   }
 
+  /**
+   * Create score board and append to DOM
+   * @param {Number} score
+   */
   printScoreBoard(score) {
     const game = this.getElement('#game'),
       scoreBoard = this.createElement('div', 'score-board')
@@ -119,6 +160,16 @@ class TicTacToe {
     scoreBoard.append(p2)
   }
 
+  /**
+   * Click handler for when a cell is clicked.
+   * Check if a move is valid. A move is valid if cell is empty and a winner hasn't been decided.
+   * If play isn't valid, return.
+   * Otherwise update the game board with current player's token, increment moveCount.
+   * Check if each play results in a win and end game if current player wins.
+   * Check if game is over each turn and switch player to next player.
+   * @param {MouseEvent} e
+   */
+
   handleClickCell(e) {
     const { row, col } = e.target.dataset,
       validPlay = !this.board[row][col] && !this.winner
@@ -136,10 +187,16 @@ class TicTacToe {
     this.nextPlayer()
   }
 
+  /** Check if game is over */
   isGameOver() {
     return this.moveCount >= 9
   }
 
+  /**
+   * Reset the game by setting current player to player 'x',
+   * move count to 0, winner to null.
+   * Create a new board and reset cell vals to ''.
+   */
   resetGame() {
     this.currPlayer = this.players.x
     this.moveCount = 0
@@ -152,6 +209,11 @@ class TicTacToe {
     }
   }
 
+  /**
+   * If there is a winner, update the score and scoreboard.
+   * Remove click event listener from cells.
+   * Print out game end message and show the replay button.
+   */
   handleGameOver() {
     if (this.winner) {
       this.updateScore()
@@ -167,6 +229,11 @@ class TicTacToe {
     this.toggleReplayButton(true)
   }
 
+  /**
+   * Click handler for replay button.
+   * Add click event listeners back to cells,reset the game,
+   * clear message and hide replay button
+   */
   handleClickReplay() {
     const cells = document.querySelectorAll('.col')
     for (const cell of cells) {
@@ -178,6 +245,7 @@ class TicTacToe {
     this.toggleReplayButton(false)
   }
 
+  /** Create replay button and append to DOM */
   printReplayButton() {
     const game = this.getElement('#game'),
       button = this.createElement('button', 'btn', 'replay')
@@ -186,11 +254,21 @@ class TicTacToe {
     game.append(button)
   }
 
+  /**
+   * Toggle replay button display
+   * @param {Boolean} display
+   */
   toggleReplayButton(display) {
     const replayBtn = this.getElement('#replay')
     replayBtn.style.display = display ? 'block' : 'none'
   }
 
+  /**
+   * Check horizontal, vertical and diagonal lines of board to see if current player won.
+   * Return true if the player won, otherwise return false.
+   * @param {string} row
+   * @param {string} col
+   */
   didPlayerWin(row, col) {
     const b = this.board,
       currP = this.currPlayer.token
@@ -208,11 +286,16 @@ class TicTacToe {
     return false
   }
 
+  /** Switch to next player */
   nextPlayer() {
     this.currPlayer =
       this.currPlayer === this.players.x ? this.players.o : this.players.x
   }
 
+  /**
+   * Create game end message and append to DOM
+   * @param {Object} winner
+   */
   printEndMessage(winner) {
     const message = winner ? `${winner.name} won!` : 'Nobody won.',
       game = this.getElement('#game'),
@@ -222,6 +305,7 @@ class TicTacToe {
     game.append(element)
   }
 
+  /** clear out game end message */
   clearMessage() {
     const message = this.getElement('.message')
     message.remove()

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+    <link href="./style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="players" id="players">
+      <h1>Enter players:</h1>
+      <div class="player">
+        <label for="player-1">Player 1: </label>
+        <input type="text" name="player-1" id="player-1" />
+      </div>
+      <div class="player">
+        <label for="player-2">Player 2: </label>
+        <input type="text" name="player-2" id="player-2" />
+      </div>
+      <button id="start" class="btn">Start</button>
+    </div>
+    <div id="game"></div>
+    <script src="./tictactoe.js"></script>
+
+    <script>
+      /** click handler for start button.
+       * Take the names from the input field and initialize a new Game.
+       */
+      function handleClickStart() {
+        const p1 = document.querySelector('#player-1').value || 'player 1',
+          p2 = document.querySelector('#player-2').value || 'player 2'
+
+        const game = new TicTacToe(p1, p2)
+        document.querySelector('#game').style.display = 'block'
+        game.init()
+        document.querySelector('#players').style.display = 'none'
+      }
+
+      /** Add event listener to the start button. */
+      document
+        .querySelector('#start')
+        .addEventListener('click', handleClickStart)
+    </script>
+  </body>
+</html>
